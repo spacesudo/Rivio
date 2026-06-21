@@ -76,3 +76,6 @@ keep-runtime-typing = true
 quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
+
+[tool.vercel]
+entrypoint = "src.__init__:app"
