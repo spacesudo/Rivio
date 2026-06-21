@@ -1,0 +1,35 @@
+{
+  "name": "velo-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@7kprotocol/sdk-ts": "^3.6.0",
+    "@bluefin-exchange/bluefin7k-aggregator-sdk": "^5.5.1",
+    "@cetusprotocol/aggregator-sdk": "^1.5.8",
+    "@flowx-finance/sdk": "^2.1.0",
+    "@mysten/enoki": "0.6.0",
+    "@mysten/sui": "1.45.2",
+    "@naviprotocol/lending": "^1.4.6",
+    "@tabler/icons-react": "^3.44.0",
+    "axios": "^1.18.0",
+    "next": "14.2.35",
+    "qrcode.react": "^4.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.41",
+    "@types/react": "18.3.30",
+    "@types/react-dom": "18.3.7",
+    "autoprefixer": "10.5.0",
+    "postcss": "8.5.15",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.9.3"
+  }
+}

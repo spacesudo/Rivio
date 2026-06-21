@@ -1,5 +1,5 @@
 def main():
-    return ("Hello from velo-api!")
+    return "Hello from velo-api!"
 
 
 if __name__ == "__main__":
