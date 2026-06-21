@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     SWAP_TREASURY_ADDRESS: str = ""
     SWAP_COMMISSION_BPS: int = 85
 
-    CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    CORS_ORIGINS: list[str] = ["http://localhost:3000", "https://rivio-fe.vercel.app/"]
 
     @property
     def effective_sui_rpc_url(self) -> str:
