@@ -1,5 +1,6 @@
 import uuid
 
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -87,7 +88,17 @@ class UserService:
             wallet_address=wallet_address,
         )
         session.add(user)
-        await session.commit()
+        try:
+            await session.commit()
+        except IntegrityError:
+            # A concurrent request created the same identity first
+            # (e.g. parallel /auth/me + /kyc on first login). Fall back
+            # to the now-existing row instead of failing with a 500.
+            await session.rollback()
+            existing = await self.get_user_by_identity(provider, subject, session)
+            if existing is not None:
+                return existing, False
+            raise
         await session.refresh(user)
         return user, True
 

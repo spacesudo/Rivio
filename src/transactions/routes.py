@@ -6,7 +6,7 @@ from src.audit.service import AuditService
 from src.auth.dependencies import AuthContext, enoki_client, get_auth_context
 from src.config import settings
 from src.db.main import get_session
-from src.db.models import Asset
+from src.db.models import Asset, TransactionStatus
 from src.errors import UserNotFoundError
 from src.kyc.dependencies import require_verified_kyc
 from src.transactions.schemas import (
@@ -111,6 +111,8 @@ async def execute_transfer(
     )
     if tx is None:
         raise UserNotFoundError("No sponsored transaction found for the given digest.")
+    if tx.status == TransactionStatus.EXECUTED:
+        return ExecuteTransferResponse(digest=tx.sui_digest or body.digest)
     try:
         digest = await enoki_client.execute_transaction(body.digest, body.signature)
     except Exception as exc:

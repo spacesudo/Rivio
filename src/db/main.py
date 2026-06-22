@@ -1,12 +1,18 @@
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.pool import NullPool
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.config import settings
 
-async_engine = create_async_engine(url=settings.DATABASE_URL, echo=True)
+async_engine = create_async_engine(
+    url=settings.DATABASE_URL,
+    echo=settings.SQL_ECHO,
+    poolclass=NullPool,
+    pool_pre_ping=True,
+)
 
 
 async def initdb():

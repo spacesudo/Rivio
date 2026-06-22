@@ -5,6 +5,7 @@ from src.audit.service import AuditService
 from src.auth.dependencies import AuthContext, enoki_client, get_auth_context
 from src.config import settings
 from src.db.main import get_session
+from src.db.models import TransactionStatus
 from src.errors import UserNotFoundError
 from src.kyc.dependencies import require_verified_kyc
 from src.swap.schemas import (
@@ -95,6 +96,8 @@ async def execute_swap(
     )
     if record is None:
         raise UserNotFoundError("No sponsored swap found for the given digest.")
+    if record.status == TransactionStatus.EXECUTED:
+        return ExecuteSwapResponse(digest=record.sui_digest or body.digest)
     try:
         digest = await enoki_client.execute_transaction(body.digest, body.signature)
     except Exception as exc:
