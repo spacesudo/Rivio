@@ -8,7 +8,6 @@ from src.config import settings
 from src.db.main import get_session
 from src.db.models import Asset, TransactionStatus
 from src.errors import UserNotFoundError
-from src.kyc.dependencies import require_verified_kyc
 from src.transactions.schemas import (
     ExecuteTransferRequest,
     ExecuteTransferResponse,
@@ -68,7 +67,7 @@ async def _sponsor_and_record(
 async def build_sui_transfer(
     body: TransferRequest,
     request: Request,
-    ctx: AuthContext = Depends(require_verified_kyc),
+    ctx: AuthContext = Depends(get_auth_context),
     session: AsyncSession = Depends(get_session),
 ) -> SponsoredTransactionResponse:
     kind_bytes = await sui.build_sui_transfer(
@@ -83,7 +82,7 @@ async def build_sui_transfer(
 async def build_usdc_transfer(
     body: TransferRequest,
     request: Request,
-    ctx: AuthContext = Depends(require_verified_kyc),
+    ctx: AuthContext = Depends(get_auth_context),
     session: AsyncSession = Depends(get_session),
 ) -> SponsoredTransactionResponse:
     kind_bytes = await sui.build_usdc_transfer(
@@ -103,7 +102,7 @@ async def build_usdc_transfer(
 async def execute_transfer(
     body: ExecuteTransferRequest,
     request: Request,
-    ctx: AuthContext = Depends(require_verified_kyc),
+    ctx: AuthContext = Depends(get_auth_context),
     session: AsyncSession = Depends(get_session),
 ) -> ExecuteTransferResponse:
     tx = await transaction_service.get_by_digest(

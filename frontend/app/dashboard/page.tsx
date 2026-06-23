@@ -20,6 +20,13 @@ function suiToUsd(sui: string | null): string | null {
   return (n * 3.5).toFixed(2);
 }
 
+function getTimeOfDayGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<VeloUser | null>(null);
@@ -85,7 +92,7 @@ export default function DashboardPage() {
       {/* Premium Header */}
       <div className="flex items-center justify-between px-6 pb-4 pt-safe pt-8">
         <div>
-          <p className="text-caption text-neutral mb-1">Good morning</p>
+          <p className="text-caption text-neutral mb-1">{getTimeOfDayGreeting()}</p>
           <h1 className="text-display text-2xl text-white">
             rivio<span className="text-primary">.</span>
           </h1>
