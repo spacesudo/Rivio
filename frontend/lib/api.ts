@@ -74,6 +74,9 @@ async function request<T>(
     } catch {
       // ignore non-JSON bodies
     }
+    if (res.status === 401 && typeof window !== "undefined") {
+      window.location.href = "/";
+    }
     throw new ApiError(message, res.status, code);
   }
 
