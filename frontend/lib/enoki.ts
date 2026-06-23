@@ -36,7 +36,7 @@ export async function startAppleLogin(): Promise<void> {
   if (!config.appleClientId) throw new Error("Apple login is not configured.");
   const enoki = getEnokiFlow();
   const url = await enoki.createAuthorizationURL({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line
     provider: "apple" as any,
     clientId: config.appleClientId,
     redirectUrl: authRedirectUrl(),

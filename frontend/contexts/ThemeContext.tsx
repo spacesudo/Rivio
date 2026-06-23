@@ -17,7 +17,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
-    // Load saved theme from localStorage
     const saved = localStorage.getItem("theme") as Theme;
     if (saved && ["light", "dark", "system"].includes(saved)) {
       setTheme(saved);
@@ -35,15 +34,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const newResolvedTheme = resolveTheme();
     setResolvedTheme(newResolvedTheme);
 
-    // Apply theme to document
     document.documentElement.setAttribute("data-theme", newResolvedTheme);
     document.documentElement.classList.toggle("dark", newResolvedTheme === "dark");
     document.documentElement.classList.toggle("light", newResolvedTheme === "light");
 
-    // Save to localStorage
     localStorage.setItem("theme", theme);
 
-    // Listen for system theme changes
     if (theme === "system") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       const handleChange = () => {

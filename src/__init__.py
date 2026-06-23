@@ -8,6 +8,7 @@ from src.errors import register_all_errors
 from src.kyc.routes import router as kyc_router
 from src.lending.routes import router as lending_router
 from src.onramp.routes import router as onramp_router
+from src.security import add_security_middleware
 from src.swap.routes import router as swap_router
 from src.transactions.routes import router as transactions_router
 from src.wallet.routes import router as wallet_router
@@ -22,6 +23,7 @@ app = FastAPI(
 )
 
 register_all_errors(app)
+add_security_middleware(app)
 
 app.add_middleware(
     CORSMiddleware,

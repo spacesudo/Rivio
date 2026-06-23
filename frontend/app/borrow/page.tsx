@@ -68,7 +68,6 @@ export default function BorrowPage() {
         if (me) {
           setWalletAddress(me.wallet_address);
           
-          // Build symbol by coin type map for user lending
           const symbolByCoinType = assetsData.assets.reduce((acc, asset) => {
             acc[asset.type] = asset.symbol;
             return acc;
@@ -90,7 +89,6 @@ export default function BorrowPage() {
     })();
   }, [router]);
 
-  // Fetch market data when asset changes
   useEffect(() => {
     if (!assetSym || assets.length === 0) return;
     
@@ -110,7 +108,6 @@ export default function BorrowPage() {
   const selectedAsset = assets.find((a) => a.symbol === assetSym);
   const userPosition = userLending?.positions.find((p) => p.symbol === assetSym);
 
-  // Balance validation for supply/repay
   const currentBalance = balance && selectedAsset 
     ? (assetSym === "USDC" ? parseFloat(balance.usdc) : parseFloat(balance.sui))
     : 0;
@@ -121,7 +118,6 @@ export default function BorrowPage() {
     if (!amount || parseFloat(amount) <= 0) { toast("Enter an amount.", "error"); return; }
     if (!walletAddress || !selectedAsset) { toast("Not ready.", "error"); return; }
     
-    // Check balance for supply and repay actions
     if ((tab === "supply" || tab === "repay") && balance) {
       const currentBalance = assetSym === "USDC" ? parseFloat(balance.usdc) : parseFloat(balance.sui);
       const enteredAmount = parseFloat(amount);
@@ -131,7 +127,6 @@ export default function BorrowPage() {
       }
     }
     
-    // Additional validation for borrow/repay
     if (tab === "borrow" && healthFactor !== null && healthFactor < 1.1) {
       toast("Health factor too low to borrow more.", "error");
       return;
@@ -158,7 +153,6 @@ export default function BorrowPage() {
       toast(`${tab.charAt(0).toUpperCase() + tab.slice(1)} complete!`, "success");
       setAmount("");
       
-      // Refresh user state
       if (walletAddress) {
         const symbolByCoinType = assets.reduce((acc, asset) => {
           acc[asset.type] = asset.symbol;

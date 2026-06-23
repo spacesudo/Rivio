@@ -69,11 +69,9 @@ export default function DashboardPage() {
       ]
     : [];
 
-  // Mock balance history for sparkline (7 days of data)
   const balanceHistory = useMemo(() => {
     if (!balance) return [];
     const currentTotal = parseFloat(balance.usdc) + parseFloat(suiToUsd(balance.sui) || "0");
-    // Generate realistic-looking historical data with some variation
     return [
       currentTotal * 0.92,
       currentTotal * 0.95,

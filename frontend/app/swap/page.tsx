@@ -41,6 +41,7 @@ export default function SwapPage() {
   const [loadingTokens, setLoadingTokens] = useState(true);
   const [slippage, setSlippage] = useState(0.01);
   const [showSlippageSettings, setShowSlippageSettings] = useState(false);
+  const [showHighImpactModal, setShowHighImpactModal] = useState(false);
   const [balance, setBalance] = useState<WalletBalance | null>(null);
   const quoteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -98,54 +99,71 @@ export default function SwapPage() {
     setQuote(null);
   };
 
-  const handleSwap = async () => {
-    if (!amount || parseFloat(amount) <= 0) { toast("Enter an amount.", "error"); return; }
-    if (!quote) { toast("Invalid quote.", "error"); return; }
-    
-    // Check balance
+  const validateSwap = () => {
+    if (!amount || parseFloat(amount) <= 0) { toast("Enter an amount.", "error"); return false; }
+    if (!quote) { toast("Invalid quote.", "error"); return false; }
     if (balance && fromToken) {
       const currentBalance = fromSym === "USDC" ? parseFloat(balance.usdc) : parseFloat(balance.sui);
       const enteredAmount = parseFloat(amount);
       if (enteredAmount > currentBalance) {
         toast(`Insufficient balance. You have ${currentBalance.toFixed(fromSym === "USDC" ? 2 : 4)} ${fromSym}.`, "error");
-        return;
+        return false;
       }
     }
-    
-    // Check price impact warning
-    if (quote.priceImpact && quote.priceImpact > 5) {
-      if (!confirm(`High price impact detected (${quote.priceImpact.toFixed(2)}%). Continue anyway?`)) {
-        return;
-      }
-    }
+    return true;
+  };
 
+  const runSwap = async () => {
+    const jwt = await getJwt();
+    if (!jwt) throw new Error("Not signed in.");
+    const fromToken = tokens.find((t) => t.symbol === fromSym)!;
+    const toToken = tokens.find((t) => t.symbol === toSym)!;
+    const rawIn = Math.round(parseFloat(amount) * fromToken.scalar);
+    const me = await import("@/lib/api").then((m) => m.fetchMe(jwt));
+
+    const txBytes = await buildSwapKindBytes({
+      quote: quote!,
+      accountAddress: me.wallet_address,
+      slippage,
+    });
+
+    const minOut = Number((quote!.expectedOut * BigInt(Math.round((1 - slippage) * 10_000))) / BigInt(10_000));
+
+    const sponsored = await sponsorSwap(jwt, {
+      tx_bytes: txBytes,
+      from_coin: fromSym,
+      to_coin: toSym,
+      amount_in: rawIn,
+      min_out: minOut,
+    });
+
+    const signature = await signSponsoredBytes(sponsored.bytes);
+    await executeSwap(jwt, sponsored.digest, signature);
+  };
+
+  const handleSwap = async () => {
+    if (!validateSwap()) return;
+    if (quote?.priceImpact && quote.priceImpact > 5) {
+      setShowHighImpactModal(true);
+      return;
+    }
     setBusy(true);
     try {
-      const jwt = await getJwt();
-      if (!jwt) throw new Error("Not signed in.");
-      const fromToken = tokens.find((t) => t.symbol === fromSym)!;
-      const toToken = tokens.find((t) => t.symbol === toSym)!;
-      const rawIn = Math.round(parseFloat(amount) * fromToken.scalar);
-      const me = await import("@/lib/api").then((m) => m.fetchMe(jwt));
-      
-      const txBytes = await buildSwapKindBytes({ 
-        quote, 
-        accountAddress: me.wallet_address, 
-        slippage,
-      });
-      
-      const minOut = Number((quote.expectedOut * BigInt(Math.round((1 - slippage) * 10_000))) / BigInt(10_000));
-      
-      const sponsored = await sponsorSwap(jwt, {
-        tx_bytes: txBytes,
-        from_coin: fromSym,
-        to_coin: toSym,
-        amount_in: rawIn,
-        min_out: minOut,
-      });
-      
-      const signature = await signSponsoredBytes(sponsored.bytes);
-      await executeSwap(jwt, sponsored.digest, signature);
+      await runSwap();
+      toast("Swap complete!", "success");
+      router.push("/dashboard");
+    } catch (err) {
+      toast(err instanceof Error ? err.message : "Swap failed.", "error");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const confirmHighImpactSwap = async () => {
+    setShowHighImpactModal(false);
+    setBusy(true);
+    try {
+      await runSwap();
       toast("Swap complete!", "success");
       router.push("/dashboard");
     } catch (err) {
@@ -163,14 +181,12 @@ export default function SwapPage() {
     ? (parseFloat(expectedOut) * (1 - slippage)).toFixed(toSym === "USDC" ? 2 : 4)
     : null;
 
-  // Balance validation
   const currentBalance = balance && fromToken 
     ? (fromSym === "USDC" ? parseFloat(balance.usdc) : parseFloat(balance.sui))
     : 0;
   const enteredAmount = parseFloat(amount) || 0;
   const hasInsufficientBalance = enteredAmount > currentBalance && currentBalance > 0;
 
-  // Price impact color
   const getPriceImpactColor = (impact: number | null) => {
     if (!impact) return "text-white/60";
     if (impact < 0.5) return "text-emerald-400";
@@ -356,6 +372,42 @@ export default function SwapPage() {
                   {opt.label}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* High price impact confirmation */}
+      {showHighImpactModal && (
+        <div className="fixed inset-0 z-50 flex items-end bg-black/60">
+          <div className="glass-sheet w-full max-w-shell rounded-t-[28px] p-5 animate-rise">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-base font-semibold text-white">High price impact</h2>
+              <button
+                onClick={() => setShowHighImpactModal(false)}
+                className="text-white/50 hover:text-white"
+              >
+                <IconX size={20} />
+              </button>
+            </div>
+            <p className="mb-4 text-xs text-white/50">
+              This swap has a price impact of {quote?.priceImpact?.toFixed(2)}%. You may receive significantly less than expected.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowHighImpactModal(false)}
+                disabled={busy}
+                className="flex-1 rounded-btn px-4 py-3 text-sm font-medium text-white glass-card hover:bg-white/10 transition-all disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmHighImpactSwap}
+                disabled={busy}
+                className="flex-1 rounded-btn px-4 py-3 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-all disabled:opacity-50"
+              >
+                {busy ? "Swapping…" : "Swap Anyway"}
+              </button>
             </div>
           </div>
         </div>

@@ -118,7 +118,6 @@ export default function ProfilePage() {
 
   const kycInfo = getKycInfo();
 
-  // Calculate completion steps
   const getCompletionSteps = (): CompletionStep[] => {
     if (!user) return [];
 
