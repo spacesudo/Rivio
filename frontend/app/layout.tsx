@@ -6,6 +6,10 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 export const metadata: Metadata = {
   title: "Rivio",
   description: "Finance at the speed of now.",
+  icons: {
+    icon: "/rivio.png",
+    apple: "/rivio.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

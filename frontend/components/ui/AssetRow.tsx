@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Skeleton } from "./Skeleton";
 
 export type AssetRowData = {
@@ -7,15 +8,25 @@ export type AssetRowData = {
   change_pct?: number | null;
 };
 
+const TOKEN_LOGOS: Record<string, string> = {
+  SUI: "/sui.png",
+  USDC: "/usdc.png",
+};
+
 export function AssetRow({ asset }: { asset: AssetRowData }) {
   const changePositive = (asset.change_pct ?? 0) >= 0;
+  const logo = TOKEN_LOGOS[asset.symbol.toUpperCase()];
   return (
     <div className="flex items-center justify-between py-3">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#6C63FF]/20" style={{ border: "0.5px solid rgba(108,99,255,0.35)" }}>
-          <span className="text-xs font-bold text-violet-soft">
-            {asset.symbol.replace("$", "").slice(0, 2)}
-          </span>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden bg-[#6C63FF]/20" style={{ border: "0.5px solid rgba(108,99,255,0.35)" }}>
+          {logo ? (
+            <Image src={logo} alt={asset.symbol} width={40} height={40} className="rounded-full object-cover" />
+          ) : (
+            <span className="text-xs font-bold text-violet-soft">
+              {asset.symbol.replace("$", "").slice(0, 2)}
+            </span>
+          )}
         </div>
         <div>
           <p className="text-sm font-medium text-white">{asset.symbol}</p>
