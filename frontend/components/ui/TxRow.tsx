@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   IconArrowDown,
   IconArrowUp,
@@ -9,6 +10,16 @@ import {
 } from "@tabler/icons-react";
 import { Skeleton } from "./Skeleton";
 import type { Activity, ActivityKind } from "@/lib/api";
+
+const TOKEN_LOGOS: Record<string, string> = {
+  SUI: "/sui.png",
+  USDC: "/usdc.png",
+};
+
+function activityAssetLogo(asset: string): string | null {
+  const sym = asset.split("→")[0].trim().toUpperCase();
+  return TOKEN_LOGOS[sym] ?? null;
+}
 
 const ICON_MAP: Record<ActivityKind, React.ReactNode> = {
   send: <IconArrowUp size={16} />,
@@ -67,14 +78,23 @@ export function TxRow({
   const color = COLOR_MAP[activity.kind];
   const sign = SIGN_MAP[activity.kind];
 
+  const logo = activityAssetLogo(activity.asset);
+
   return (
     <button
       onClick={onClick}
       className="flex w-full items-center justify-between py-3 text-left transition-colors hover:bg-white/[0.03]"
     >
       <div className="flex items-center gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-full ${color}`}>
-          {icon}
+        <div className="relative">
+          <div className={`flex h-10 w-10 items-center justify-center rounded-full ${color}`}>
+            {icon}
+          </div>
+          {logo && (
+            <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 overflow-hidden rounded-full border border-[#15131F]">
+              <Image src={logo} alt={activity.asset} width={16} height={16} className="object-cover" />
+            </div>
+          )}
         </div>
         <div>
           <p className="text-sm font-medium capitalize text-white">{activity.kind}</p>
