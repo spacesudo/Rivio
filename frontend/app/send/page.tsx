@@ -85,7 +85,7 @@ export default function SendPage() {
           <div className="glass-card p-5">
             <label className="text-caption text-neutral mb-3 block">Token</label>
             <div className="flex items-center justify-between">
-              <TokenSelector tokens={TOKENS} value={token} onChange={setToken} />
+              <TokenSelector tokens={TOKENS} value={token} onChange={setToken} dropUp />
               {available && (
                 <div className="text-right">
                   <p className="text-caption text-neutral">Available</p>

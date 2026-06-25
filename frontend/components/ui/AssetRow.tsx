@@ -21,7 +21,7 @@ export function AssetRow({ asset }: { asset: AssetRowData }) {
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden bg-[#6C63FF]/20" style={{ border: "0.5px solid rgba(108,99,255,0.35)" }}>
           {logo ? (
-            <Image src={logo} alt={asset.symbol} width={40} height={40} className="rounded-full object-cover" />
+            <Image src={logo} alt={asset.symbol} width={40} height={40} unoptimized className="rounded-full object-cover" />
           ) : (
             <span className="text-xs font-bold text-violet-soft">
               {asset.symbol.replace("$", "").slice(0, 2)}

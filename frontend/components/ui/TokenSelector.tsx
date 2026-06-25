@@ -18,7 +18,7 @@ const TOKEN_LOGOS: Record<string, string> = {
 function TokenLogo({ symbol }: { symbol: string }) {
   const logo = TOKEN_LOGOS[symbol.toUpperCase()];
   return logo ? (
-    <Image src={logo} alt={symbol} width={20} height={20} className="rounded-full object-cover" />
+    <Image src={logo} alt={symbol} width={20} height={20} unoptimized className="rounded-full object-cover" />
   ) : (
     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6C63FF]/30 text-[9px] font-bold text-violet-soft">
       {symbol.slice(0, 2)}
@@ -30,11 +30,13 @@ export function TokenSelector({
   tokens,
   value,
   onChange,
+  dropUp = false,
 }: {
   tokens: Token[];
   value: string;
   onChange: (symbol: string) => void;
   dark?: boolean;
+  dropUp?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -65,7 +67,9 @@ export function TokenSelector({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-50 mt-1.5 min-w-[120px] overflow-hidden rounded-2xl border border-white/10 bg-[#15131F] shadow-xl">
+        <div className={`absolute left-0 z-50 min-w-[120px] overflow-hidden rounded-2xl border border-white/10 bg-[#15131F] shadow-xl ${
+          dropUp ? "bottom-full mb-1.5" : "top-full mt-1.5"
+        }`}>
           {tokens.map((t) => (
             <button
               key={t.symbol}

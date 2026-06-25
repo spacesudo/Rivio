@@ -92,7 +92,7 @@ export function TxRow({
           </div>
           {logo && (
             <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 overflow-hidden rounded-full border border-[#15131F]">
-              <Image src={logo} alt={activity.asset} width={16} height={16} className="object-cover" />
+              <Image src={logo} alt={activity.asset} width={16} height={16} unoptimized className="object-cover" />
             </div>
           )}
         </div>
