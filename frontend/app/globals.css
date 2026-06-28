@@ -420,6 +420,13 @@ html.light .border-white\/12 { border-color: rgba(15, 23, 42, 0.12); }
 html.light .border-white\/15 { border-color: rgba(15, 23, 42, 0.14); }
 html.light .divider { border-bottom-color: rgba(15, 23, 42, 0.1); }
 
+/* Token selector dropdown surface (theme-aware) */
+.token-dropdown { background: #15131F; }
+html.light .token-dropdown {
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+}
+
 /* Color utilities */
 .text-primary { color: var(--primary); }
 .text-secondary { color: var(--secondary); }

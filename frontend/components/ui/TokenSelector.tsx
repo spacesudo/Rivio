@@ -67,7 +67,7 @@ export function TokenSelector({
       </button>
 
       {open && (
-        <div className={`absolute left-0 z-50 min-w-[120px] overflow-hidden rounded-2xl border border-white/10 bg-[#15131F] shadow-xl ${
+        <div className={`token-dropdown absolute left-0 z-50 min-w-[120px] overflow-hidden rounded-2xl border border-white/10 shadow-xl ${
           dropUp ? "bottom-full mb-1.5" : "top-full mt-1.5"
         }`}>
           {tokens.map((t) => (
@@ -75,7 +75,7 @@ export function TokenSelector({
               key={t.symbol}
               type="button"
               onClick={() => { onChange(t.symbol); setOpen(false); }}
-              className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-white/[0.07] ${
+              className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-white/10 ${
                 t.symbol === value ? "text-violet-soft" : "text-white"
               }`}
             >
