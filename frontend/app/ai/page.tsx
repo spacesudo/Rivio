@@ -150,7 +150,7 @@ export default function AiPage() {
           <button
             onClick={() => send()}
             disabled={!input.trim() || typing}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg transition-all disabled:opacity-35 active:scale-95"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-all disabled:opacity-35 active:scale-95"
           >
             <IconSend size={15} />
           </button>

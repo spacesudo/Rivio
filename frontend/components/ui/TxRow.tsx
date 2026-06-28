@@ -109,11 +109,11 @@ export function TxRow({
         </div>
       </div>
       <div className="text-right">
-        <p className={`text-sm font-semibold ${sign === "+" ? "text-emerald-300" : sign === "-" ? "text-white" : "text-violet-soft"}`}>
+        <p className={`text-sm font-semibold ${sign === "+" ? "text-positive" : sign === "-" ? "text-white" : "text-violet-soft"}`}>
           {sign}
           {formatAmount(activity.amount, activity.asset)} {activity.asset.split("→")[0]}
         </p>
-        <p className={`text-xs capitalize ${activity.status === "executed" ? "text-emerald-400" : activity.status === "failed" ? "text-red-400" : "text-white/45"}`}>
+        <p className={`text-xs capitalize ${activity.status === "executed" ? "text-positive" : activity.status === "failed" ? "text-negative" : "text-white/45"}`}>
           {activity.status}
         </p>
       </div>

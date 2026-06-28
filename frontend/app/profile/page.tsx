@@ -19,6 +19,7 @@ import {
 import { getJwt, logout } from "@/lib/enoki";
 import { fetchMe, getKyc, type VeloUser, type KycRecord } from "@/lib/api";
 import { FloatingNav } from "@/components/layout/FloatingNav";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useToast } from "@/components/ui/Toast";
 import { config } from "@/lib/config";
@@ -201,7 +202,7 @@ export default function ProfilePage() {
       {/* Profile header */}
       <div className="flex flex-col items-center gap-3 px-6 py-6">
         <div className="relative">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-xl font-bold text-white shadow-lg">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
             {loading ? "…" : initials}
           </div>
           {kycStatus === "verified" && (
@@ -297,6 +298,12 @@ export default function ProfilePage() {
               </div>
             </button>
           ))}
+        </div>
+
+        {/* Appearance */}
+        <div className="mb-2 mt-4 px-1 text-[10px] font-semibold uppercase tracking-widest text-white/40">Appearance</div>
+        <div className="glass-card animate-rise rounded-card p-4" style={{ animationDelay: "40ms" }}>
+          <ThemeToggle />
         </div>
 
         {/* Resources */}

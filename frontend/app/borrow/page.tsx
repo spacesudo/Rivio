@@ -213,7 +213,7 @@ export default function BorrowPage() {
               onClick={() => setTab(t)}
               className={`flex-1 rounded-btn py-2.5 text-xs font-semibold capitalize transition-all ${
                 tab === t
-                  ? "bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg"
+                  ? "bg-primary text-white"
                   : "text-neutral hover:text-white"
               }`}
             >
@@ -368,7 +368,7 @@ export default function BorrowPage() {
         <button
           onClick={handleAction}
           disabled={busy || !amount || loading || hasInsufficientBalance}
-          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-gradient-to-br from-primary to-primary-dark font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl disabled:opacity-40 active:scale-[0.98]"
+          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-primary font-semibold text-white transition-all hover:opacity-90 disabled:opacity-40 active:scale-[0.98]"
         >
           {busy ? <Spinner size={16} /> : null}
           {busy ? "Processing…" : hasInsufficientBalance ? "Insufficient Balance" : ctaLabel[tab]}

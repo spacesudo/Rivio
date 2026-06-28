@@ -71,7 +71,7 @@ export default function ReceivePage() {
               
               <button
                 onClick={copy}
-                className="flex w-full items-center justify-center gap-2 rounded-btn bg-gradient-to-br from-primary to-primary-dark px-4 py-3 font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-btn bg-primary px-4 py-3 font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]"
               >
                 {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
                 {copied ? "Copied!" : "Copy address"}
@@ -81,7 +81,7 @@ export default function ReceivePage() {
             {/* Asset info */}
             <div className="glass-accent w-full rounded-card px-4 py-3 text-xs text-primary">
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                <div className="h-2 w-2 rounded-full bg-positive" />
                 <span>Only send SUI, USDC, or other Sui-native assets to this address.</span>
               </div>
             </div>

@@ -114,20 +114,20 @@ export default function DashboardPage() {
               <div className="h-12 w-48 animate-pulse rounded-lg bg-white/10" />
             ) : (
               <div className="flex items-baseline gap-2">
-                <p className="text-display text-4xl text-white">
+                <p className="text-display text-5xl tracking-tight text-white">
                   ${totalUsd ?? "—"}
                 </p>
                 {balanceHistory.length > 0 && (
                   <div className="flex items-center gap-1">
                     {balanceHistory[balanceHistory.length - 1] > balanceHistory[0] ? (
-                      <IconTrendingUp size={16} className="text-emerald-400" />
+                      <IconTrendingUp size={16} className="text-positive" />
                     ) : (
-                      <IconTrendingDown size={16} className="text-red-400" />
+                      <IconTrendingDown size={16} className="text-negative" />
                     )}
                     <span className={`text-sm font-medium ${
                       balanceHistory[balanceHistory.length - 1] > balanceHistory[0] 
-                        ? "text-emerald-400" 
-                        : "text-red-400"
+                        ? "text-positive" 
+                        : "text-negative"
                     }`}>
                       {balanceHistory[0] === 0 ? "0.0" : Math.abs(((balanceHistory[balanceHistory.length - 1] - balanceHistory[0]) / balanceHistory[0]) * 100).toFixed(1)}%
                     </span>
@@ -167,7 +167,7 @@ export default function DashboardPage() {
       <ActionBar />
 
       {/* Assets Section */}
-      <div className="mt-6 flex-1 space-y-4 px-6">
+      <div className="mt-6 flex-1 space-y-4 px-6 pb-28">
         <section className="animate-rise glass-card p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-headline text-lg text-white">Assets</h2>

@@ -38,7 +38,7 @@ export function AssetRow({ asset }: { asset: AssetRowData }) {
           {asset.usd_value != null ? `$${asset.usd_value}` : "—"}
         </p>
         {asset.change_pct != null && (
-          <p className={`text-xs font-medium ${changePositive ? "text-emerald-400" : "text-red-400"}`}>
+          <p className={`text-xs font-medium ${changePositive ? "text-positive" : "text-negative"}`}>
             {changePositive ? "+" : ""}
             {asset.change_pct.toFixed(2)}%
           </p>

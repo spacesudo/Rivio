@@ -59,7 +59,7 @@ export default function LoginPage() {
           <button
             onClick={handleGoogle}
             disabled={googleBusy}
-            className="flex h-12 w-full items-center justify-center gap-3 rounded-btn bg-white font-medium text-[#111] transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex h-12 w-full items-center justify-center gap-3 rounded-btn border border-black/5 bg-white font-medium text-[#111] transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {googleBusy ? <Spinner size={16} className="border-[#111]/20 border-t-[#111]" /> : <IconBrandGoogle size={18} />}
             Continue with Google

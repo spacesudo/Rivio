@@ -57,8 +57,8 @@ export function ActionBar() {
             <div
               className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                 a.accent
-                  ? "bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg hover:shadow-xl pulse-glow"
-                  : "glass-strong text-white hover:bg-white/15"
+                  ? "bg-primary text-white hover:opacity-90"
+                  : "glass-strong text-white hover:bg-white/10"
               }`}
             >
               {a.label === "Buy" && buying ? <Spinner size={16} /> : a.icon}

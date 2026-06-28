@@ -335,7 +335,7 @@ export default function SwapPage() {
         <button
           onClick={handleSwap}
           disabled={busy || !amount || !quote || !expectedOut || hasInsufficientBalance}
-          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-gradient-to-br from-primary to-primary-dark font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl disabled:opacity-40 active:scale-[0.98]"
+          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-primary font-semibold text-white transition-all hover:opacity-90 disabled:opacity-40 active:scale-[0.98]"
         >
           {busy ? <Spinner size={16} /> : null}
           {busy ? "Swapping…" : hasInsufficientBalance ? "Insufficient Balance" : quote?.priceImpact && quote.priceImpact > 5 ? "Swap Anyway" : "Swap"}

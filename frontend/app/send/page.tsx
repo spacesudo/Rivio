@@ -131,7 +131,7 @@ export default function SendPage() {
 
           <div className="glass-accent rounded-card px-4 py-3 text-xs text-primary">
             <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-emerald-400" />
+              <div className="h-2 w-2 rounded-full bg-positive" />
               <span>Gas fees are covered by Rivio. You only pay what you send.</span>
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function SendPage() {
         <button
           onClick={handleSend}
           disabled={busy || !recipient || !amount}
-          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-gradient-to-br from-primary to-primary-dark font-semibold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl active:scale-[0.98] disabled:opacity-40"
+          className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-btn bg-primary font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-40"
         >
           {busy ? <Spinner size={16} /> : null}
           {busy ? "Sending…" : "Send"}

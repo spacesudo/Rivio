@@ -6,13 +6,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Sophisticated Color Palette */
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
-  --secondary: #7c3aed;
-  --secondary-light: #8b5cf6;
-  --accent: #06b6d4;
+  /* Brand Palette — violet brand, green for positive/yield */
+  --primary: #6C63FF;
+  --primary-light: #8B85FF;
+  --primary-dark: #5A52E0;
+  --secondary: #6C63FF;
+  --secondary-light: #8B85FF;
+  --accent: #6C63FF;
+  --positive: #34D399;
+  --positive-dim: rgba(52, 211, 153, 0.14);
+  --negative: #F87171;
   
   /* Premium Neutrals */
   --neutral-50: #f8fafc;
@@ -26,21 +29,25 @@
   --neutral-800: #1e293b;
   --neutral-900: #0f172a;
   
-  /* Luxury Background - Dark Theme */
+  /* Background - Dark Theme (true black, flat) */
   --bg-primary-dark: #000000;
-  --bg-secondary-dark: #0a0a0a;
-  --bg-tertiary-dark: #1a1a1a;
+  --bg-secondary-dark: #000000;
+  --bg-tertiary-dark: #0E0E0E;
   
-  /* Luxury Background - Light Theme */
-  --bg-primary-light: #ffffff;
-  --bg-secondary-light: #f8fafc;
-  --bg-tertiary-light: #f1f5f9;
+  /* Background - Light Theme */
+  --bg-primary-light: #F7F7F8;
+  --bg-secondary-light: #FFFFFF;
+  --bg-tertiary-light: #FFFFFF;
   
-  /* Premium Glass */
-  --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.12);
-  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  /* Flat card surfaces */
+  --surface: #0E0E0E;
+  --surface-raised: #141414;
+  --surface-border: rgba(255, 255, 255, 0.06);
+  --surface-border-strong: rgba(255, 255, 255, 0.10);
+  --glass-bg: #0E0E0E;
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: #141414;
+  --glass-border-strong: rgba(255, 255, 255, 0.10);
   
   /* Typography Scale */
   --text-xs: 0.75rem;
@@ -99,10 +106,17 @@ html.light {
   --bg-primary: var(--bg-primary-light);
   --bg-secondary: var(--bg-secondary-light);
   --bg-tertiary: var(--bg-tertiary-light);
-  --glass-bg: rgba(0, 0, 0, 0.05);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --glass-bg-strong: rgba(0, 0, 0, 0.08);
-  --glass-border-strong: rgba(0, 0, 0, 0.15);
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-border: rgba(15, 23, 42, 0.08);
+  --surface-border-strong: rgba(15, 23, 42, 0.12);
+  --positive: #059669;
+  --positive-dim: rgba(5, 150, 105, 0.12);
+  --negative: #DC2626;
+  --glass-bg: #FFFFFF;
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-bg-strong: #FFFFFF;
+  --glass-border-strong: rgba(15, 23, 42, 0.12);
   --neutral-50: #0f172a;
   --neutral-400: #64748b;
   --neutral-500: #475569;
@@ -118,10 +132,14 @@ html.dark {
   --bg-primary: var(--bg-primary-dark);
   --bg-secondary: var(--bg-secondary-dark);
   --bg-tertiary: var(--bg-tertiary-dark);
-  --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.12);
-  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --surface: #0E0E0E;
+  --surface-raised: #141414;
+  --surface-border: rgba(255, 255, 255, 0.06);
+  --surface-border-strong: rgba(255, 255, 255, 0.10);
+  --glass-bg: #0E0E0E;
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: #141414;
+  --glass-border-strong: rgba(255, 255, 255, 0.10);
   --neutral-50: #f8fafc;
   --neutral-400: #94a3b8;
   --neutral-500: #64748b;
@@ -132,122 +150,86 @@ html.dark body {
   background: var(--bg-primary-dark);
 }
 
-/* Premium Background System */
+/* Background System — true black, flat */
 .app-bg {
   position: relative;
-  background:
-    radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at center, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background: var(--bg-primary);
   min-height: 100vh;
   transition: background 0.3s ease;
 }
 
-/* Light theme background adjustments */
 html.light .app-bg {
-  background:
-    radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at center, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
-    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background: var(--bg-primary);
 }
 
-/* Luxury Glass System */
+/* Flat Surface System (no blur) */
 .glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius-xl);
 }
 
 .glass-strong {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid var(--glass-border-strong);
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius-xl);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius-2xl);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
 }
 
 .glass-accent {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(124, 58, 237, 0.15) 100%);
-  border: 1px solid rgba(37, 99, 235, 0.3);
+  background: rgba(108, 99, 255, 0.12);
+  border: 1px solid rgba(108, 99, 255, 0.30);
   border-radius: var(--radius-xl);
 }
 
-/* Premium Card System */
+/* Card System — flat */
 .hero-card {
-  background: linear-gradient(145deg, 
-    rgba(37, 99, 235, 0.25) 0%, 
-    rgba(124, 58, 237, 0.15) 50%, 
-    rgba(6, 182, 212, 0.1) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius-3xl);
   position: relative;
   overflow: hidden;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-    0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.hero-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(180deg); }
-}
-
-/* Premium Button System */
+/* Button System */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: var(--radius-xl);
   padding: var(--space-3) var(--space-6);
   font-weight: 600;
   font-size: var(--text-sm);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 4px 12px rgba(37, 99, 235, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.2) inset;
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 
-    0 8px 20px rgba(37, 99, 235, 0.4),
-    0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  background: var(--primary-light);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 
-    0 2px 8px rgba(37, 99, 235, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  background: var(--primary-dark);
 }
+
+/* Solid dark pill button (Avici style) */
+.btn-pill {
+  background: var(--surface-raised);
+  color: #fff;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-full);
+  padding: var(--space-4) var(--space-6);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: transform 0.15s ease;
+}
+
+.btn-pill:active { transform: scale(0.98); }
+html.light .btn-pill { color: #0f172a; }
 
 /* Typography Classes */
 .text-display {
@@ -276,22 +258,18 @@ html.light .app-bg {
   text-transform: uppercase;
 }
 
-/* Premium Navigation */
+/* Navigation — flat dark pill */
 .nav-pill {
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius-3xl);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 /* Form Elements */
 .form-input {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border-strong);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);
   color: var(--neutral-50);
@@ -340,10 +318,10 @@ html.light .app-bg {
 
 @keyframes pulse-glow {
   0%, 100% { 
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
   }
   50% { 
-    box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 30px rgba(108, 99, 255, 0.5);
   }
 }
 
@@ -363,33 +341,40 @@ input[type='number'] {
   appearance: textfield;
 }
 
-/* ── Light theme: premium surfaces ── */
+/* ── Light theme: flat surfaces ── */
 html.light .glass-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.04) 0%, rgba(15, 23, 42, 0.02) 100%);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+}
+
+html.light .glass,
+html.light .glass-strong {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
 }
 
 html.light .glass-accent {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.08) 100%);
-  border: 1px solid rgba(37, 99, 235, 0.25);
+  background: rgba(108, 99, 255, 0.10);
+  border: 1px solid rgba(108, 99, 255, 0.25);
 }
 
 html.light .nav-pill {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
 }
 
 html.light .form-input {
-  background: rgba(15, 23, 42, 0.04);
+  background: #FFFFFF;
   border: 1px solid rgba(15, 23, 42, 0.12);
   color: var(--neutral-50);
 }
 
 html.light .hero-card {
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  background: #FFFFFF;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 /* ── Light theme adaptation for hardcoded white-based utilities ──
@@ -421,7 +406,7 @@ html.light .border-white\/15 { border-color: rgba(15, 23, 42, 0.14); }
 html.light .divider { border-bottom-color: rgba(15, 23, 42, 0.1); }
 
 /* Token selector dropdown surface (theme-aware) */
-.token-dropdown { background: #15131F; }
+.token-dropdown { background: var(--surface-raised); }
 html.light .token-dropdown {
   background: #ffffff;
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
@@ -432,10 +417,13 @@ html.light .token-dropdown {
 .text-secondary { color: var(--secondary); }
 .text-accent { color: var(--accent); }
 .text-neutral { color: var(--neutral-400); }
+.text-positive { color: var(--positive); }
+.text-negative { color: var(--negative); }
 
 .bg-primary { background: var(--primary); }
 .bg-secondary { background: var(--secondary); }
 .bg-accent { background: var(--accent); }
+.bg-positive-dim { background: var(--positive-dim); }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
