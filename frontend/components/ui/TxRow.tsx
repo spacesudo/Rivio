@@ -10,6 +10,7 @@ import {
 } from "@tabler/icons-react";
 import { Skeleton } from "./Skeleton";
 import type { Activity, ActivityKind } from "@/lib/api";
+import { explorerTxUrl } from "@/lib/config";
 
 const TOKEN_LOGOS: Record<string, string> = {
   SUI: "/sui.png",
@@ -146,9 +147,7 @@ export function TxDetailModal({
   activity: Activity;
   onClose: () => void;
 }) {
-  const explorerUrl = activity.digest
-    ? `https://suiexplorer.com/txblock/${activity.digest}`
-    : null;
+  const explorerUrl = activity.digest ? explorerTxUrl(activity.digest) : null;
 
   return (
     <div

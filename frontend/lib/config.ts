@@ -16,3 +16,8 @@ export function assertConfig(): string | null {
   if (!config.googleClientId) return "NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set.";
   return null;
 }
+
+/** Build a Sui block-explorer URL for a transaction digest on the active network. */
+export function explorerTxUrl(digest: string): string {
+  return `https://suiscan.xyz/${config.network}/tx/${digest}`;
+}

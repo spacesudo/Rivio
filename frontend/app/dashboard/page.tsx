@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { IconTrendingUp, IconTrendingDown, IconActivity, IconArrowUp } from "@tabler/icons-react";
 
 import { getJwt } from "@/lib/enoki";
-import { fetchMe, getBalance, isProfileComplete, type VeloUser, type WalletBalance } from "@/lib/api";
+import { fetchMe, getAssets, isProfileComplete, type VeloUser, type WalletAssets } from "@/lib/api";
 
 import { ActionBar } from "@/components/ui/ActionBar";
 import { AssetRow, AssetRowSkeleton, type AssetRowData } from "@/components/ui/AssetRow";
@@ -13,12 +13,6 @@ import { TxRow, TxRowSkeleton } from "@/components/ui/TxRow";
 import { Sparkline } from "@/components/ui/Sparkline";
 import { FloatingNav } from "@/components/layout/FloatingNav";
 import { getWalletHistory, type Activity } from "@/lib/api";
-
-function suiToUsd(sui: string | null): string | null {
-  if (!sui) return null;
-  const n = parseFloat(sui);
-  return (n * 3.5).toFixed(2);
-}
 
 function getTimeOfDayGreeting(): string {
   const hour = new Date().getHours();
@@ -30,7 +24,7 @@ function getTimeOfDayGreeting(): string {
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<VeloUser | null>(null);
-  const [balance, setBalance] = useState<WalletBalance | null>(null);
+  const [assetsData, setAssetsData] = useState<WalletAssets | null>(null);
   const [activities, setActivities] = useState<Activity[] | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,8 +36,8 @@ export default function DashboardPage() {
         const me = await fetchMe(jwt);
         if (!isProfileComplete(me)) { router.replace("/onboarding"); return; }
         setUser(me);
-        const bal = await getBalance(jwt);
-        setBalance(bal);
+        const bal = await getAssets(jwt);
+        setAssetsData(bal);
         const hist = await getWalletHistory(jwt);
         setActivities(hist);
       } catch {
@@ -58,20 +52,26 @@ export default function DashboardPage() {
     ? ((user.first_name?.[0] ?? "") + (user.last_name?.[0] ?? "")).toUpperCase() || user.email?.[0]?.toUpperCase() || "R"
     : undefined;
 
-  const totalUsd = balance
-    ? (parseFloat(balance.usdc) + parseFloat(suiToUsd(balance.sui) ?? "0")).toFixed(2)
-    : null;
+  const totalUsd = assetsData ? parseFloat(assetsData.total_usd).toFixed(2) : null;
 
-  const assets: AssetRowData[] = balance
-    ? [
-        { symbol: "USDC", balance: `${parseFloat(balance.usdc).toLocaleString()} USDC`, usd_value: parseFloat(balance.usdc).toFixed(2), change_pct: 0 },
-        { symbol: "SUI", balance: `${parseFloat(balance.sui).toFixed(4)} SUI`, usd_value: suiToUsd(balance.sui), change_pct: 2.14 },
-      ]
+  const assets: AssetRowData[] = assetsData
+    ? assetsData.assets.map((a) => ({
+        symbol: a.symbol,
+        balance: `${parseFloat(a.balance).toLocaleString(undefined, { maximumFractionDigits: 4 })} ${a.symbol}`,
+        usd_value: a.usd_value,
+        change_pct: undefined,
+      }))
     : [];
 
+  const breakdown = assetsData
+    ? assetsData.assets
+        .map((a) => `${parseFloat(a.balance).toLocaleString(undefined, { maximumFractionDigits: 4 })} ${a.symbol}`)
+        .join(" · ")
+    : "—";
+
   const balanceHistory = useMemo(() => {
-    if (!balance) return [];
-    const currentTotal = parseFloat(balance.usdc) + parseFloat(suiToUsd(balance.sui) || "0");
+    if (!assetsData) return [];
+    const currentTotal = parseFloat(assetsData.total_usd);
     return [
       currentTotal * 0.92,
       currentTotal * 0.95,
@@ -81,7 +81,7 @@ export default function DashboardPage() {
       currentTotal * 0.97,
       currentTotal,
     ];
-  }, [balance]);
+  }, [assetsData]);
 
   const recent = activities?.slice(0, 3) ?? null;
 
@@ -143,9 +143,7 @@ export default function DashboardPage() {
             ) : (
               <div>
                 <p className="text-sm text-neutral mb-1">Portfolio breakdown</p>
-                <p className="text-body text-white">
-                  {balance ? `${parseFloat(balance.usdc).toLocaleString()} USDC · ${parseFloat(balance.sui).toFixed(2)} SUI` : "—"}
-                </p>
+                <p className="text-body text-white">{breakdown}</p>
               </div>
             )}
             {balanceHistory.length > 0 && (

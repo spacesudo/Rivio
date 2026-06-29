@@ -310,7 +310,7 @@ export default function ProfilePage() {
         <div className="mb-2 mt-4 px-1 text-[10px] font-semibold uppercase tracking-widest text-white/40">Resources</div>
         <div className="glass-card animate-rise overflow-hidden rounded-card" style={{ animationDelay: "60ms" }}>
           <a
-            href="https://suiexplorer.com"
+            href={`https://suiscan.xyz/${config.network}`}
             target="_blank"
             rel="noopener noreferrer"
             className="divider flex w-full items-center justify-between px-4 py-4 transition-colors hover:bg-white/5"
